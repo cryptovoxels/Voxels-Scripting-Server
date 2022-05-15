@@ -48,7 +48,7 @@ app.get("/", (req: any, res: any) => {
 });
 /** @internal */
 export const makeVSSForParcel = async (id: string | number) => {
-  const bundle = await fetchLatestScriptingJS()
+  const bundle = await fetchLatestScriptingJS();
 
   let context = new vm.VM({ allowAsync: true, timeout: 1000, sandbox });
 

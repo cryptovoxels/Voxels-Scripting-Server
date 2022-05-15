@@ -17,21 +17,19 @@ export const tryParse = (text: string) => {
 };
 /** @internal */
 export const fetchLatestScriptingJS = async () => {
+  log.info("Fetching latest scripting bundle");
+  let p;
+  try {
+    p = await fetch(`https://www.cryptovoxels.com/scripting-host.js`);
+  } catch (e: any) {
+    throw new Error(e.toString());
+  }
+  let r;
+  try {
+    r = await p?.text();
+  } catch (er: any) {
+    throw new Error(er.toString());
+  }
 
-    log.info("Fetching latest scripting bundle");
-    let p;
-    try {
-      p = await fetch(`https://www.cryptovoxels.com/scripting-host.js`);
-    } catch (e: any) {
-      throw new Error(e.toString());
-    }
-    let r;
-    try {
-      r = await p?.text();
-    } catch (er: any) {
-      throw new Error(er.toString());
-    }
-
-    return r
-  
+  return r;
 };
