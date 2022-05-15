@@ -1,9 +1,9 @@
 /**
  *  This is an example server using the makeVSSForParcel
  * */
-import { makeVSSForParcel } from "./sub";
+import vss from "../src/index";
 
-makeVSSForParcel(670).then((wss) => {
+vss.makeVSS(670).then((wss) => {
   if (wss) {
     console.log("Websocket started");
   } else {

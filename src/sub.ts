@@ -46,7 +46,7 @@ app.get("/", (req: any, res: any) => {
   res.set("Content-Type", "text/plain");
   res.send(status);
 });
-
+/** @internal */
 export const makeVSSForParcel = async (id: string | number) => {
   const bundle = await getScriptingBundle();
 
@@ -176,5 +176,5 @@ export const makeVSSForParcel = async (id: string | number) => {
   );
   return wss;
 };
-
+/** @internal */
 export { app as expressApp };

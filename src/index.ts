@@ -1,3 +1,7 @@
-import { makeVSSForParcel as makeVSS, expressApp } from "./sub";
+import { makeVSSForParcel, expressApp } from "./sub";
 
-export default { makeVSS, expressApp };
+export const makeVSS = makeVSSForParcel;
+export const app = expressApp;
+
+const vss = { makeVSS, app };
+export default vss;

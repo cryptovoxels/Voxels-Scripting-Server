@@ -6,8 +6,8 @@
   "main": "src/index.js",
   "scripts": {
     "clean": "rm -rf dist",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node src/server.ts",
+    "test:server": "ts-node client/server.ts",
+    "test:client": "ts-node client/client_test.ts",
     "format": "prettier --write \"src/**/*.ts\"",
     "build": "tsc",
     "prepare": "npm run build",
@@ -18,9 +18,7 @@
   "author": "Benjy Larcher",
   "license": "ISC",
   "files": [
-    "dist/src/index.js",
-    "dist/src/index.js.map",
-    "dist/src/index.d.ts"
+    "dist"
   ],
   "dependencies": {
     "cors": "^2.8.5",

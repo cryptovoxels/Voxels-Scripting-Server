@@ -3,8 +3,11 @@ import * as path from "path";
 import fetch from "node-fetch";
 import { named } from "./logger";
 import { version } from "../package.json";
+/** @internal */
 export const log = named(`VSS [${version}]`);
+/** @internal */
 export const expressLog = named(`Express`);
+/** @internal */
 export const tryParse = (text: string) => {
   try {
     return JSON.parse(text);
@@ -12,7 +15,7 @@ export const tryParse = (text: string) => {
     return null;
   }
 };
-
+/** @internal */
 export const fetchLatestScriptingJS = () => {
   return new Promise(async (resolve, reject) => {
     log.info("Fetching latest scripting bundle");
@@ -46,7 +49,7 @@ export const fetchLatestScriptingJS = () => {
     }
   });
 };
-
+/** @internal */
 export const getScriptingBundle = async () => {
   const readBundle = () => {
     let bundle;

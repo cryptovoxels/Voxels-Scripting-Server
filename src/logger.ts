@@ -20,9 +20,11 @@ const log = winston.createLogger({
   exitOnError: false,
   transports: [consoleTransport],
 });
+/** @internal */
 export default log;
 
 // create a labeled and named logger with a prefix
+/** @internal */
 export const named = (label: string) => {
   let format = winston.format.combine(
     winston.format.label({ label: label, message: true }),

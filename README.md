@@ -12,7 +12,7 @@ This module exports two objects:
 
 2. Edit server.ts. Replace `670` with the parcel ID or Space ID you want to create a scripting server for.
 
-3. run `npm run start`;
+3. run `npm run test:server`;
 This will run the server.
 
 These steps are to create a very simple server in 3 simple steps;
