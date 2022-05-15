@@ -1,6 +1,6 @@
 {
   "name": "voxels-scripting-server",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "A basic server to run Voxels.com scripts",
   "lib": "src/index.d.ts",
   "main": "src/index.js",
