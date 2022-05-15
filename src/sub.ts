@@ -30,7 +30,6 @@ const postMessageCallback = function (message: string) {
   }
 };
 
-
 const sandbox = {
   console,
   fetch,
@@ -42,13 +41,13 @@ const sandbox = {
 export const clients = new Set<WebSocket>();
 const server = http.createServer(app);
 app.get("/", (req: any, res: express.Response) => {
-  let  html = `<html>
+  let html = `<html>
   <head>
   <title>VSS ${version}</title></head>
   <body>
   <h2>Server v ${version} running!</h2>
   <p>Currently ${clients.size} users are connected</p>
-  </body></html>`
+  </body></html>`;
 
   res.send(html);
 });
@@ -57,7 +56,7 @@ export const makeVSSForParcel = async (id: string | number) => {
   const bundle = await fetchLatestScriptingJS();
 
   let context = new vm.VM({ allowAsync: true, timeout: 1000, sandbox });
-  
+
   const loadParcel = async (parcelId: string | number) => {
     log.info(`Loading scripts of parcel# ${parcelId}`);
 
@@ -181,11 +180,11 @@ export const makeVSSForParcel = async (id: string | number) => {
     }
   );
 
-  setInterval(()=>{
-    const heap = process.memoryUsage().heapUsed / 1024 / 1024
-    expressLog.info(`Memory used: ${heap} MB`)
-  },5000)
-  
+  setInterval(() => {
+    const heap = process.memoryUsage().heapUsed / 1024 / 1024;
+    expressLog.info(`Memory used: ${heap} MB`);
+  }, 5000);
+
   return wss;
 };
 /** @internal */
