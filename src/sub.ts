@@ -19,7 +19,7 @@ const app = express();
 /** @internal */
 export const clients = new Set<WebSocket>();
 const server = http.createServer(app);
-const context = new Context(clients)
+const context = new Context(clients);
 
 app.get("/", (req: any, res: express.Response) => {
   let html = `<html>
@@ -33,7 +33,7 @@ app.get("/", (req: any, res: express.Response) => {
   res.send(html);
 });
 
-const runParcelScript=async (context:Context,id:string|number)=>{
+const runParcelScript = async (context: Context, id: string | number) => {
   let parcelScript = await loadParcel(id);
 
   try {
@@ -42,19 +42,17 @@ const runParcelScript=async (context:Context,id:string|number)=>{
     log.error("Error thrown at load", e);
     return null;
   }
-}
-
+};
 
 /** @internal */
 export const makeVSSForParcel = async (id: string | number) => {
-  await context.init()
-  await runParcelScript(context,id)
-  const wss =startWebSocket(context,id)
-  return wss
+  await context.init();
+  await runParcelScript(context, id);
+  const wss = startWebSocket(context, id);
+  return wss;
 };
 
-const startWebSocket = (context:Context,id: string | number)=>{
-
+const startWebSocket = (context: Context, id: string | number) => {
   const wss = new WebSocketServer({ server });
   server.listen(NODE_PORT, function listening() {
     log.info(`Listening on ${NODE_PORT}`);
@@ -114,18 +112,22 @@ const startWebSocket = (context:Context,id: string | number)=>{
           log.info("Received message but received data isn't JSON parsable");
         }
 
-        if(data.type === 'script-updated'){
+        if (data.type === "script-updated") {
           // script was updated, we should restart the context.
-          log.info('Script updated, context restarting')
-          context.generateContext().then(()=>{
-            runParcelScript(context,id)
-          })
-          return
+          log.info("Script updated, context restarting");
+          context.generateContext().then(() => {
+            runParcelScript(context, id);
+          });
+          return;
         }
 
-        if(!context.hasParcelLoaded){
-          log.warning('Received '+data.type+' but no parcel has been generated in the context yet')
-          return
+        if (!context.hasParcelLoaded) {
+          log.warning(
+            "Received " +
+              data.type +
+              " but no parcel has been generated in the context yet"
+          );
+          return;
         }
 
         if (!data.player) {
@@ -162,7 +164,7 @@ const startWebSocket = (context:Context,id: string | number)=>{
   }, 5000);
 
   return wss;
-}
+};
 
 /** @internal */
 export { app as expressApp };
