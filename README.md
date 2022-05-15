@@ -63,3 +63,11 @@ https://replit.com/@Benjythebee/testCryptovoxelsserver#index.js
 2. Also make sure your code builds using `npm run build`
 
 4. Create a Pull request at https://github.com/cryptovoxels/Voxels-Scripting-Server .
+
+
+## todo:
+
+1. Introduce ability to interconnect parcels.
+2. Better tests
+
+Any ideas are welcomed
