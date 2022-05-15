@@ -2,44 +2,25 @@ require("dotenv").config();
 import * as express from "express";
 import * as http from "http";
 import { WebSocketServer, WebSocket } from "ws";
-import { fetchLatestScriptingJS, tryParse } from "./helpers";
-import fetch from "node-fetch";
+import { loadParcel, tryParse } from "./helpers";
+
 import { version } from "../package.json";
 import { log, expressLog } from "./helpers";
 import * as url from "url";
 
 // Virtual machine to run the scripts in.
-import * as vm from "vm2";
+import Context from "./context";
 const NODE_PORT = process.env.NODE_PORT
   ? parseInt(process.env.NODE_PORT, 10)
   : 3000;
 
 const app = express();
 
-const fetchJson = (url: string, ...args: any) =>
-  fetch(url, args).then((r: any) => r.json());
-const postMessageCallback = function (message: string) {
-  let msg = tryParse(message);
-
-  if (msg) {
-    let m = JSON.stringify(msg);
-
-    clients.forEach((c: WebSocket) => {
-      c.send(m);
-    });
-  }
-};
-
-const sandbox = {
-  console,
-  fetch,
-  fetchJson,
-  postMessage: postMessageCallback,
-  importScripts: () => {},
-};
 /** @internal */
 export const clients = new Set<WebSocket>();
 const server = http.createServer(app);
+const context = new Context(clients)
+
 app.get("/", (req: any, res: express.Response) => {
   let html = `<html>
   <head>
@@ -51,47 +32,28 @@ app.get("/", (req: any, res: express.Response) => {
 
   res.send(html);
 });
+
+const runParcelScript=async (context:Context,id:string|number)=>{
+  let parcelScript = await loadParcel(id);
+
+  try {
+    context.current.run(parcelScript);
+  } catch (e) {
+    log.error("Error thrown at load", e);
+    return null;
+  }
+}
+
+
 /** @internal */
 export const makeVSSForParcel = async (id: string | number) => {
-  const bundle = await fetchLatestScriptingJS();
+  await context.init()
+  await runParcelScript(context,id)
+  const wss =startWebSocket(context,id)
+  return wss
+};
 
-  let context = new vm.VM({ allowAsync: true, timeout: 1000, sandbox });
-
-  const loadParcel = async (parcelId: string | number) => {
-    log.info(`Loading scripts of parcel# ${parcelId}`);
-
-    const isSpace = typeof parcelId == "string";
-    const type = isSpace ? "spaces" : "parcels";
-
-    const url = `https://untrusted.cryptovoxels.com/grid/${type}/${parcelId}/scripts.js`;
-
-    let f = await fetch(url);
-    let r = await f.text();
-
-    try {
-      context.run(r);
-    } catch (e) {
-      log.error("Error thrown at load", e);
-      return null;
-    }
-
-    log.info(`loading finished for parcel#${parcelId}`);
-    return r;
-  };
-
-  try {
-    context.run(`self = global;`);
-  } catch (err) {
-    console.error("Failed to set global.", err);
-  }
-
-  try {
-    context.run(bundle);
-  } catch (err) {
-    console.error("Failed to run template.", err);
-  }
-
-  await loadParcel(id);
+const startWebSocket = (context:Context,id: string | number)=>{
 
   const wss = new WebSocketServer({ server });
   server.listen(NODE_PORT, function listening() {
@@ -112,7 +74,7 @@ export const makeVSSForParcel = async (id: string | number) => {
   });
 
   wss.on("listening", function () {
-    // log.info(`Listening on ${NODE_PORT}`);
+    log.info(`Websocket started on port ${NODE_PORT}`);
   });
 
   wss.on(
@@ -130,7 +92,7 @@ export const makeVSSForParcel = async (id: string | number) => {
       let code = `self.onmessage(${JSON.stringify({ data })})`;
 
       try {
-        context.run(code);
+        context.current.run(code);
       } catch {
         log.error("failed to self.onmessage load");
       }
@@ -152,6 +114,20 @@ export const makeVSSForParcel = async (id: string | number) => {
           log.info("Received message but received data isn't JSON parsable");
         }
 
+        if(data.type === 'script-updated'){
+          // script was updated, we should restart the context.
+          log.info('Script updated, context restarting')
+          context.generateContext().then(()=>{
+            runParcelScript(context,id)
+          })
+          return
+        }
+
+        if(!context.hasParcelLoaded){
+          log.warning('Received '+data.type+' but no parcel has been generated in the context yet')
+          return
+        }
+
         if (!data.player) {
           // Data has to contain a player object
           data["player"] = {};
@@ -169,7 +145,7 @@ export const makeVSSForParcel = async (id: string | number) => {
 
         let code = `self.onmessage(${JSON.stringify({ data })})`;
         try {
-          context.run(code);
+          context.current.run(code);
         } catch (e) {
           log.error(e);
           log.error("Error thrown on message: " + data.type);
@@ -186,6 +162,7 @@ export const makeVSSForParcel = async (id: string | number) => {
   }, 5000);
 
   return wss;
-};
+}
+
 /** @internal */
 export { app as expressApp };

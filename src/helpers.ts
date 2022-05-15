@@ -33,3 +33,19 @@ export const fetchLatestScriptingJS = async () => {
 
   return r;
 };
+
+/** @internal */
+export const loadParcel = async (parcelId: string | number) => {
+  log.info(`Loading scripts of parcel# ${parcelId}`);
+
+  const isSpace = typeof parcelId == "string";
+  const type = isSpace ? "spaces" : "parcels";
+
+  const url = `https://untrusted.cryptovoxels.com/grid/${type}/${parcelId}/scripts.js`;
+
+  let f = await fetch(url);
+  let r = await f.text();
+
+  log.info(`loading finished for parcel#${parcelId}`);
+  return r;
+};

@@ -27,8 +27,16 @@ const sendPlayYoutube = ()=>{
     ws.send(JSON.stringify(data));
 }
 
+const sendScriptUpdated = ()=>{
+  const data = {type:'script-updated'}
+  ws.send(JSON.stringify(data));
+}
+
 ws.on('open', function open() {
     console.log('Client connected')
+    setTimeout(()=>{
+      sendScriptUpdated()
+    },3000)
 });
 
 ws.on('close', function close() {
