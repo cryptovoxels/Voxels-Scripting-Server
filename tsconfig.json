@@ -11,7 +11,8 @@
       "declaration": true,
       "skipLibCheck": true,
       "experimentalDecorators": true,
-      "strict": true
+      "strict": true,
+      "stripInternal": true
     },
     "exclude": ["node_modules"],
     "include": [

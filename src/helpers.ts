@@ -42,7 +42,11 @@ export const fetchLatestScriptingJS = () => {
 
     try {
       log.info("Creating cache: " + r.length);
-      fs.writeFile("cache/scripting-host.js", r, res);
+      fs.writeFile(
+        path.join(__dirname, "..", "cache/scripting-host.js"),
+        r,
+        res
+      );
     } catch (e) {
       log.error(e);
       reject();
@@ -54,7 +58,9 @@ export const getScriptingBundle = async () => {
   const readBundle = () => {
     let bundle;
     try {
-      bundle = fs.readFileSync("./cache/scripting-host.js").toString();
+      bundle = fs
+        .readFileSync(path.join(__dirname, "..", "/cache/scripting-host.js"))
+        .toString();
     } catch {}
     return bundle;
   };
