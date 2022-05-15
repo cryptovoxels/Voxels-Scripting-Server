@@ -1,3 +1,3 @@
-import { makeVSSForParcel as makeVSS,expressApp } from "./sub";
+import { makeVSSForParcel as makeVSS, expressApp } from "./sub";
 
-export default {makeVSS,expressApp}
+export default { makeVSS, expressApp };

@@ -3,10 +3,10 @@
  * */
 import { makeVSSForParcel } from "./sub";
 
-makeVSSForParcel(670).then((wss)=>{
-  if(wss){
-    console.log('Websocket started')
-  }else{
-    console.error('Websocket did not start')
+makeVSSForParcel(670).then((wss) => {
+  if (wss) {
+    console.log("Websocket started");
+  } else {
+    console.error("Websocket did not start");
   }
-})
+});
