@@ -2,7 +2,7 @@ require("dotenv").config();
 import * as express from "express";
 import * as http from "http";
 import { WebSocketServer, WebSocket } from "ws";
-import { getScriptingBundle, tryParse } from "./helpers";
+import { fetchLatestScriptingJS, tryParse } from "./helpers";
 import fetch from "node-fetch";
 import { version } from "../package.json";
 import { log, expressLog } from "./helpers";
@@ -48,7 +48,7 @@ app.get("/", (req: any, res: any) => {
 });
 /** @internal */
 export const makeVSSForParcel = async (id: string | number) => {
-  const bundle = await getScriptingBundle();
+  const bundle = await fetchLatestScriptingJS()
 
   let context = new vm.VM({ allowAsync: true, timeout: 1000, sandbox });
 
