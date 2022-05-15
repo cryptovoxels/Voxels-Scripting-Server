@@ -5,11 +5,11 @@
   "lib": "src/index.d.ts",
   "main": "src/index.js",
   "scripts": {
-    "clean": "rm dist",
+    "clean": "rm -rf dist",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "ts-node src/server.ts",
     "format": "prettier --write \"src/**/*.ts\"",
-    "build": "tsc --declaration",
+    "build": "tsc",
     "prepare": "npm run build",
     "version": "npm run format && git add -A src",
     "postversion": "git push origin && git push origin --tags",
@@ -18,7 +18,9 @@
   "author": "Benjy Larcher",
   "license": "ISC",
   "files": [
-    "src"
+    "dist/src/index.js",
+    "dist/src/index.js.map",
+    "dist/src/index.d.ts"
   ],
   "dependencies": {
     "cors": "^2.8.5",
