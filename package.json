@@ -1,14 +1,25 @@
 {
-  "name": "voxels-scripting-engine",
-  "version": "1.0.0",
-  "description": "A basic server to host scripts",
-  "main": "index.js",
+  "name": "voxels-scripting-server",
+  "version": "0.9.0",
+  "description": "A basic server to run Voxels.com scripts",
+  "lib": "src/index.d.ts",
+  "main": "src/index.js",
   "scripts": {
+    "clean": "rm dist",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node src/server.ts"
+    "start": "ts-node src/server.ts",
+    "build": "tsc --declaration",
+    "prepare": "npm run build",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push origin && git push origin --tags",
+    "all": "npm run prepare && npm run preversion && npm run version && npm run postversion"
   },
   "author": "Benjy Larcher",
   "license": "ISC",
+  "files": [
+    "src"
+  ],
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
@@ -21,6 +32,14 @@
     "winston": "^3.7.2",
     "ws": "^8.6.0"
   },
+  "repository": {
+    "type": "git",
+    "directory": "https://github.com/cryptovoxels/Voxels-Scripting-Server"
+  },
+  "bugs": {
+    "url": "https://github.com/cryptovoxels/Voxels-Scripting-Server/issues"
+  },
+  "homepage": "https://github.com/cryptovoxels/Voxels-Scripting-Server",
   "devDependencies": {
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.13",
