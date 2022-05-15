@@ -18,7 +18,7 @@
   "author": "Benjy Larcher",
   "license": "ISC",
   "files": [
-    "dist/*"
+    "dist/src/*"
   ],
   "dependencies": {
     "cors": "^2.8.5",
