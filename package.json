@@ -13,12 +13,12 @@
     "prepare": "npm run build",
     "version": "npm run format && git add -A src",
     "postversion": "git push origin && git push origin --tags",
-    "all": "npm run prepare && npm run version && npm run postversion"
+    "all": "npm run clean && npm run prepare && npm run version && npm run postversion"
   },
   "author": "Benjy Larcher",
   "license": "ISC",
   "files": [
-    "dist"
+    "dist/src"
   ],
   "dependencies": {
     "cors": "^2.8.5",
