@@ -5,6 +5,7 @@ This module exports two objects:
 - Method `makeVSS()`; This function returns a promise containing the WebSocketServer when it has successfully started.
 - Object `expressApp` which is the express `app` object. See the express npm module documentation.
 
+**NOTE:** This is not yet supported on voxels.com
 
 ## How to run your own server
 
