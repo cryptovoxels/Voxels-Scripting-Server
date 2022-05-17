@@ -1,3 +1,4 @@
+require("dotenv").config();
 import * as fs from "fs";
 import * as path from "path";
 import fetch from "node-fetch";
@@ -17,6 +18,10 @@ export const tryParse = (text: string) => {
 };
 /** @internal */
 export const fetchLatestScriptingJS = async () => {
+  if(process.env.METHOD=='READ'){
+    return await readJSFromFile()
+  }
+
   log.info("Fetching latest scripting bundle");
   let p;
   try {
@@ -32,6 +37,19 @@ export const fetchLatestScriptingJS = async () => {
   }
 
   return r;
+};
+
+//@dev helpful for development.
+const readJSFromFile = async () => {
+  log.info("Reading scripting bundle");
+  let p;
+  try {
+    p = fs.readFileSync(path.join(__dirname,'..','iframe_scripting_host.js')).toString();
+  } catch (e: any) {
+    throw new Error(e.toString());
+  }
+  console.log(p.length)
+  return p;
 };
 
 /** @internal */

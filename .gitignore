@@ -3,3 +3,6 @@ node_modules
 .env
 dist
 build
+
+hosted_scripting_host.js
+iframe_scripting_host.js

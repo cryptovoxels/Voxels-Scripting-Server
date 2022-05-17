@@ -89,7 +89,6 @@ export default class Context {
         this._current.run(`
                 if(parcel){
                     parcel.getFeatures().forEach((f)=>parcel.removeFeature(f,false));
-                    parcel.parcel = [];
                     self = null;
                 }`);
       } catch {}
