@@ -1,3 +1,5 @@
+`Deprecated march 2024. We hope to replace the VSS with our own shared gaming infrastructure`
+
 # Self-hosted Voxels.com Scripting Server.
 A package to allow people to create their own persistent scripting server.
 This module exports two objects:
